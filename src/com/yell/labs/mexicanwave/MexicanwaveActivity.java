@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
 import android.util.Log;
@@ -21,9 +20,11 @@ public class MexicanwaveActivity extends Activity {
 	
 	private Camera camera;
 	
-	private Vibrator vibrator;
 	
 	private Button button;
+	
+	private HardwareHandler hardwareHandler;
+	
 	
 	
 	@Override
@@ -32,9 +33,6 @@ public class MexicanwaveActivity extends Activity {
 		
 		if (camera != null) {
 			camera.release();
-		}
-		if (vibrator != null) {
-			vibrator.cancel();
 		}
 	}
 	
@@ -46,7 +44,9 @@ public class MexicanwaveActivity extends Activity {
         
         button = (Button) findViewById(R.id.buttonForWave);
         
-        Context context = this;
+        hardwareHandler = (HardwareHandler) new HardwareHandler();
+        
+        final Context context = this;
         PackageManager pm = context.getPackageManager();
         
         if (!pm.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
@@ -56,7 +56,6 @@ public class MexicanwaveActivity extends Activity {
         camera = Camera.open();
         final Parameters p = camera.getParameters();
         
-        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         
         
         button.setOnClickListener(new OnClickListener() {
@@ -69,7 +68,7 @@ public class MexicanwaveActivity extends Activity {
 	        		camera.setParameters(p);
 	        		camera.stopPreview();
 	        		
-	        		vibrator.cancel();
+	        		
 	        		
 	        		isLightOn = false;
 	        		
@@ -78,8 +77,10 @@ public class MexicanwaveActivity extends Activity {
 	        		p.setFlashMode(Parameters.FLASH_MODE_TORCH);
 	        		camera.setParameters(p);
 	        		camera.startPreview();
+	        			        		
+
+	        		hardwareHandler.goWild( context );
 	        		
-	        		vibrator.vibrate(1000);
 	        		
 	        		isLightOn = true;
 	        	}
