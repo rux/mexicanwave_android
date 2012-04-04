@@ -15,7 +15,6 @@ public class MexicanwaveActivity extends Activity {
     
 	private boolean isLightOn = false;
 	
-	private Camera camera;
 	private Button button;
 	private HardwareHandler hardwareHandler;
 	
@@ -25,9 +24,8 @@ public class MexicanwaveActivity extends Activity {
     protected void onStop() {
 		super.onStop();
 		
-		if (camera != null) {
-			camera.release();
-		}
+		hardwareHandler.calmDown( this.getApplicationContext() );
+		
 	}
 	
     
