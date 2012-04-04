@@ -3,7 +3,6 @@ package com.yell.labs.mexicanwave;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.hardware.Camera;
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -16,7 +15,7 @@ public class MexicanwaveActivity extends Activity {
 	private boolean isLightOn = false;
 	
 	private Button button;
-	private HardwareHandler hardwareHandler;
+	private RoarHandler roarHandler;
 	
 	
 	
@@ -24,7 +23,7 @@ public class MexicanwaveActivity extends Activity {
     protected void onStop() {
 		super.onStop();
 		
-		hardwareHandler.calmDown( this.getApplicationContext() );
+		roarHandler.calmDown( this.getApplicationContext() );
 		
 	}
 	
@@ -36,7 +35,7 @@ public class MexicanwaveActivity extends Activity {
         
         button = (Button) findViewById(R.id.buttonForWave);
         
-        hardwareHandler = (HardwareHandler) new HardwareHandler();
+        roarHandler = (RoarHandler) new RoarHandler();
         
         final Context context = this;
         
@@ -49,10 +48,10 @@ public class MexicanwaveActivity extends Activity {
 	        	
 	        	if (isLightOn) {
 	        		isLightOn = false;
-	        		hardwareHandler.calmDown( context );
+	        		roarHandler.calmDown( context );
 	        		
 	        	} else {
-	        		hardwareHandler.goWild( context );
+	        		roarHandler.goWild( context );
 	        		isLightOn = true;
 	        	}
         	}
