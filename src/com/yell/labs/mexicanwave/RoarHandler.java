@@ -8,7 +8,6 @@ import android.os.Vibrator;
 import android.util.Log;
 
 class RoarHandler {
-
 	private Vibrator vibrator;
 	private Camera camera;		  
 	

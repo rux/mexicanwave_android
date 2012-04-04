@@ -5,42 +5,31 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-
 import android.widget.Button;
-
 
 
 public class MexicanwaveActivity extends Activity {
     
 	private boolean isLightOn = false;
-	
 	private Button button;
 	private RoarHandler roarHandler;
-	
-	
 	
 	@Override
     protected void onStop() {
 		super.onStop();
-		
 		roarHandler.calmDown( this.getApplicationContext() );
-		
 	}
 	
     
     
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
         setContentView(R.layout.main);
-        
-        button = (Button) findViewById(R.id.buttonForWave);
-        
-        roarHandler = (RoarHandler) new RoarHandler();
-        
         final Context context = this;
-        
-        
-        
+        button = (Button) findViewById(R.id.buttonForWave);
+        roarHandler = (RoarHandler) new RoarHandler();
+  
         
         button.setOnClickListener(new OnClickListener() {
         	@Override
@@ -51,8 +40,8 @@ public class MexicanwaveActivity extends Activity {
 	        		roarHandler.calmDown( context );
 	        		
 	        	} else {
-	        		roarHandler.goWild( context );
 	        		isLightOn = true;
+	        		roarHandler.goWild( context );
 	        	}
         	}
         	
