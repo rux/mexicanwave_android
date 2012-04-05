@@ -14,7 +14,7 @@ public class MexicanwaveActivity extends Activity {
 	private boolean isLightOn = false;
 	private Button button;
 	private RoarHandler roarHandler;
-	private WaveHandler waveHandler;
+	private Wave waveHandler;
 	private Context context;
 	private LinearLayout view;
 	

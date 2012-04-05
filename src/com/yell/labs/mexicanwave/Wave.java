@@ -1,8 +1,8 @@
 package com.yell.labs.mexicanwave;
 
-public class WaveHandler {
+public class Wave {
 
-	public WaveHandler() {
+	public Wave() {
 
 		
 		
@@ -10,6 +10,7 @@ public class WaveHandler {
 
 	public final boolean waving = false;
 			
+	
 	
 
 }
