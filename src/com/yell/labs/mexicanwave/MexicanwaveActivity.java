@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 
 public class MexicanwaveActivity extends Activity {
@@ -13,35 +14,39 @@ public class MexicanwaveActivity extends Activity {
 	private boolean isLightOn = false;
 	private Button button;
 	private RoarHandler roarHandler;
+	private Context context;
+	private LinearLayout view;
+	
 	
 	@Override
     protected void onStop() {
 		super.onStop();
-		roarHandler.calmDown( this.getApplicationContext() );
+		roarHandler.calmDown();
 	}
 	
-    
+
     
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.main);
-        final Context context = this;
+        context = this;
+        view = (LinearLayout) findViewById(R.id.overallLayout);
         button = (Button) findViewById(R.id.buttonForWave);
-        roarHandler = (RoarHandler) new RoarHandler();
+        roarHandler = (RoarHandler) new RoarHandler(context, view);
   
         
         button.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View arg0) {
 	        	
-	        	if (isLightOn) {
+				if (isLightOn) {
 	        		isLightOn = false;
-	        		roarHandler.calmDown( context );
+	        		roarHandler.calmDown();
 	        		
 	        	} else {
 	        		isLightOn = true;
-	        		roarHandler.goWild( context );
+	        		roarHandler.goWild();
 	        	}
         	}
         	

@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="hello">Hello World, MexicanwaveActivity!</string>
     <string name="app_name">Mexicanwave</string>
 
-    <color name="white">#FFFFFF</color>
-    <color name="black">#000000</color>
-    
     <string name="Torch">Torch</string>
-    
 </resources>
