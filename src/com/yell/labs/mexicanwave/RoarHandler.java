@@ -44,8 +44,20 @@ class RoarHandler {
 	}
 	
 	private void setAzimuth(float a) {
-		Float oldAzimuth = azimuth;
-		azimuth = (a + 9*oldAzimuth) / 10;
+		double oldAzimuth = (double) azimuth;
+		// azimuth = (a + 9*oldAzimuth) / 10;
+		double newAzimuth = (double) a;
+		
+		double oldx = Math.sin(oldAzimuth);
+		double oldy = Math.cos(oldAzimuth);
+		
+		double newx = Math.sin(newAzimuth);
+		double newy = Math.cos(newAzimuth);
+
+		double x = 9*oldx + newx;
+		double y = 9*oldy + newy;
+		
+		azimuth = (float) Math.atan2(x, y);  // upside down x and y.  do not be afraid.
 	}
 	
 	private float getAzimuth() {
@@ -66,7 +78,7 @@ class RoarHandler {
 		//String azimuthText = (String) String.valueOf(azimuth * 180 / Math.PI);
 		//button.setText(azimuthText);
 		
-		Log.i("info", String.valueOf(averageAzimuth) + " and currentlyRoaring is " + String.valueOf(currentlyRoaring));
+		Log.i("info", String.valueOf(averageAzimuth) + " and absolute is " + String.valueOf(azimuth) + " and currentlyRoaring is " + String.valueOf(currentlyRoaring));
 		
 
 		
@@ -91,7 +103,7 @@ class RoarHandler {
 			theLayout.setBackgroundColor(Color.WHITE);
 			Log.i("info", "roaring ssss " + String.valueOf(currentlyRoaring));
 		} else {
-			Log.i("info", "already roaring");
+			// Log.i("info", "already roaring");
 		}
 		
 		currentlyRoaring = true;
