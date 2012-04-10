@@ -1,5 +1,8 @@
 package com.yell.labs.mexicanwave;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -17,6 +20,8 @@ class RoarHandler {
 	private LinearLayout theLayout;
 	
 	private boolean currentlyRoaring;
+	
+	private float azimuth;
 	
 
 	RoarHandler(Context c, View v) {
@@ -38,7 +43,47 @@ class RoarHandler {
 		return currentlyRoaring;
 	}
 	
+	private void setAzimuth(float a) {
+		Float oldAzimuth = azimuth;
+		azimuth = (a + 9*oldAzimuth) / 10;
+	}
 	
+	private float getAzimuth() {
+		// TODO Auto-generated method stub
+		return azimuth;
+	}	
+	
+	
+    void check(float azimuth) {
+		this.setAzimuth(azimuth);
+		
+		float averageAzimuth = this.getAzimuth();
+    	
+    	SimpleDateFormat dateFormat = new SimpleDateFormat("ss");
+		Date date = new Date();
+		int seconds = Integer.parseInt(dateFormat.format(date));
+		
+		//String azimuthText = (String) String.valueOf(azimuth * 180 / Math.PI);
+		//button.setText(azimuthText);
+		
+		Log.i("info", String.valueOf(averageAzimuth) + " and currentlyRoaring is " + String.valueOf(currentlyRoaring));
+		
+
+		
+		
+		if (averageAzimuth < 0.5 && averageAzimuth > -0.5) {
+			if (getCurrentlyRoaring() == false ) {
+				goWild();
+			};
+		} else {
+			calmDown();
+		}
+    }	
+	
+	
+	
+
+
 	public void goWild() {
 		if (currentlyRoaring != true) {
 			p.setFlashMode(Parameters.FLASH_MODE_TORCH);
@@ -59,7 +104,7 @@ class RoarHandler {
 		if (currentlyRoaring == true) {
 			p.setFlashMode(Parameters.FLASH_MODE_OFF);
 			camera.setParameters(p);
-			camera.stopPreview();    
+			camera.stopPreview();
 			theLayout.setBackgroundColor(Color.BLACK);
 		}
 		currentlyRoaring = false;

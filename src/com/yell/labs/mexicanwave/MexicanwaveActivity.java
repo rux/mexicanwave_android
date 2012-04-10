@@ -88,24 +88,7 @@ public class MexicanwaveActivity extends Activity implements SensorEventListener
     }
     
     
-    
-    private void areWeRoaring() {
-    	boolean waving = false;
-		SimpleDateFormat dateFormat = new SimpleDateFormat("ss");
-		Date date = new Date();
-		int seconds = Integer.parseInt(dateFormat.format(date));
-		
-		String azimuthText = (String) String.valueOf(azimuth * 180 / Math.PI);
-		button.setText(azimuthText);
-		
-		if (azimuth < 0.1 && azimuth > -0.1) {
-			if (roarHandler.getCurrentlyRoaring() == false ) {
-				roarHandler.goWild();
-			};
-		} else {
-			roarHandler.calmDown();
-		}
-    }
+
 
 
 
@@ -134,7 +117,7 @@ public class MexicanwaveActivity extends Activity implements SensorEventListener
 				SensorManager.getOrientation(R, orientation);
 				azimuth = orientation[0];
 				
-				areWeRoaring();
+				roarHandler.check(azimuth);
 
 			}
 			
