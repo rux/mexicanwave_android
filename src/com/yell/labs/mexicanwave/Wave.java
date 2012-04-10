@@ -1,6 +1,14 @@
 package com.yell.labs.mexicanwave;
 
-public class Wave {
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.util.Log;
+
+public class Wave implements SensorEventListener{
 
 	public Wave() {
 
@@ -8,9 +16,39 @@ public class Wave {
 		
 	}
 
-	public final boolean waving = false;
+
 			
 	
-	
+	public boolean getState() {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("ss");
+		Date date = new Date();
+		
+		int seconds = Integer.parseInt(dateFormat.format(date));
+		
+		boolean waving;
+		if (seconds % 5 == 0 ) {
+			waving = true;
+			Log.i("info", "we are waving!");
+		} else {
+			Log.i("info", "**NOT WAVING");
+			waving = false;
+		}
+				
+		return waving;
+	}
 
+
+
+	@Override
+	public void onAccuracyChanged(Sensor sensor, int accuracy) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void onSensorChanged(SensorEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
 }
