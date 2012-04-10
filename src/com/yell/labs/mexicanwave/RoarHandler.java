@@ -16,6 +16,8 @@ class RoarHandler {
 	private Parameters p;
 	private LinearLayout theLayout;
 	
+	private boolean currentlyRoaring;
+	
 
 	RoarHandler(Context c, View v) {
         PackageManager pm = c.getPackageManager();
@@ -29,35 +31,37 @@ class RoarHandler {
         p = camera.getParameters();
 		vibrator = (Vibrator) c.getSystemService(Context.VIBRATOR_SERVICE);  
         theLayout = (LinearLayout) v;
+        currentlyRoaring = false;
+	}
+	
+	public boolean getCurrentlyRoaring() {
+		return currentlyRoaring;
 	}
 	
 	
 	public void goWild() {
-		Log.i("info", "Going wild now!  Woohoo!");
-
-
-		p.setFlashMode(Parameters.FLASH_MODE_TORCH);
-		camera.setParameters(p);
-		camera.startPreview();
-        
+		if (currentlyRoaring != true) {
+			p.setFlashMode(Parameters.FLASH_MODE_TORCH);
+			camera.setParameters(p);
+			camera.startPreview();
+			// vibrator.vibrate(1000);
+			theLayout.setBackgroundColor(Color.WHITE);
+			Log.i("info", "roaring ssss " + String.valueOf(currentlyRoaring));
+		} else {
+			Log.i("info", "already roaring");
+		}
 		
-		vibrator.vibrate(1000);
-		
-		
-		theLayout.setBackgroundColor(Color.WHITE);
-		
+		currentlyRoaring = true;
 	}	
 	
 
 	public void calmDown() {
-		Log.i("info", "stopping");
-
-		p.setFlashMode(Parameters.FLASH_MODE_OFF);
-		camera.setParameters(p);
-		camera.stopPreview();    
-		
-		
-		
-		theLayout.setBackgroundColor(Color.BLACK);
+		if (currentlyRoaring == true) {
+			p.setFlashMode(Parameters.FLASH_MODE_OFF);
+			camera.setParameters(p);
+			camera.stopPreview();    
+			theLayout.setBackgroundColor(Color.BLACK);
+		}
+		currentlyRoaring = false;
 	}
 }

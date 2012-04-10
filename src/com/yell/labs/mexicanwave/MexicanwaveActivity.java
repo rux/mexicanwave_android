@@ -5,7 +5,10 @@ import java.util.Date;
 
 import android.app.Activity;
 import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,7 +24,12 @@ public class MexicanwaveActivity extends Activity implements SensorEventListener
 	private RoarHandler roarHandler;
 	private Context context;
 	private LinearLayout view;
-	
+	private SensorManager mySensorManager;
+	private Sensor accelerometer;
+	private Sensor magnetometer;
+	private float[] myGravities;
+	private float[] myMagnetics;
+	private float azimuth;
 	
 	@Override
     protected void onStop() {
@@ -38,8 +46,11 @@ public class MexicanwaveActivity extends Activity implements SensorEventListener
         context = this;
         view = (LinearLayout) findViewById(R.id.overallLayout);
         button = (Button) findViewById(R.id.buttonForWave);
-        roarHandler = (RoarHandler) new RoarHandler(context, view);
+        roarHandler = new RoarHandler(context, view);
         
+        mySensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        accelerometer = mySensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        magnetometer = mySensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
         
   
         
@@ -64,23 +75,70 @@ public class MexicanwaveActivity extends Activity implements SensorEventListener
     
     
     
+    protected void onResume() {
+    	super.onResume();
+    	mySensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_FASTEST );
+    	mySensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_FASTEST );
+    }
+ 
+    protected void onPause() {
+    	super.onPause();
+    	mySensorManager.unregisterListener(this);
+    	roarHandler.calmDown();
+    }
     
     
-    private boolean areWeRoaring() {
+    
+    private void areWeRoaring() {
     	boolean waving = false;
 		SimpleDateFormat dateFormat = new SimpleDateFormat("ss");
 		Date date = new Date();
-		
 		int seconds = Integer.parseInt(dateFormat.format(date));
 		
-		if (seconds % 5 == 0 ) {
-			waving = true;
-			Log.i("info", "we are waving!");
+		String azimuthText = (String) String.valueOf(azimuth * 180 / Math.PI);
+		button.setText(azimuthText);
+		
+		if (azimuth < 0.1 && azimuth > -0.1) {
+			if (roarHandler.getCurrentlyRoaring() == false ) {
+				roarHandler.goWild();
+			};
 		} else {
-			Log.i("info", "**NOT WAVING");
-			waving = false;
+			roarHandler.calmDown();
 		}
-				
-		return waving;
     }
+
+
+
+	@Override
+	public void onAccuracyChanged(Sensor sensor, int accuracy) {
+		// TODO Auto-generated method stub
+	}
+
+
+
+	@Override
+	public void onSensorChanged(SensorEvent event) {
+		if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+			myGravities = event.values;
+		}
+		if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+			myMagnetics = event.values;
+		}
+		
+		if (myGravities != null && myMagnetics != null) {
+			float R[] = new float[9];
+			float I[] = new float[9];
+			boolean success = SensorManager.getRotationMatrix(R, I, myGravities, myMagnetics);
+			if (success) {
+				float orientation[] = new float[3];
+				SensorManager.getOrientation(R, orientation);
+				azimuth = orientation[0];
+				
+				areWeRoaring();
+
+			}
+			
+		}
+		
+	}
 }
