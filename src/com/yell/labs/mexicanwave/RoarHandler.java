@@ -72,9 +72,7 @@ class RoarHandler {
 		
 		
 		if (averageAzimuth < 0.5 && averageAzimuth > -0.5) {
-			if (getCurrentlyRoaring() == false ) {
-				goWild();
-			};
+			goWild();
 		} else {
 			calmDown();
 		}
