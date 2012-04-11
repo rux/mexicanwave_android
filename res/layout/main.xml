@@ -18,4 +18,10 @@
         android:layout_gravity="center_horizontal"
         android:text="@string/Torch" />
 
+    <ImageView
+        android:id="@+id/spinningDisc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/wave_disc" />
+
 </LinearLayout>
