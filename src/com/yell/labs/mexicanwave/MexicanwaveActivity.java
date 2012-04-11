@@ -13,13 +13,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
 
 public class MexicanwaveActivity extends Activity implements SensorEventListener {
     
-	private boolean isLightOn = false;
 	private Button button;
 	private RoarHandler roarHandler;
 	private Context context;
@@ -30,6 +30,10 @@ public class MexicanwaveActivity extends Activity implements SensorEventListener
 	private float[] myGravities;
 	private float[] myMagnetics;
 	private float azimuth;
+	
+	WaveCompass waveCompass;
+	
+	private RotateAnimation rotateAnimation;
 	
 	@Override
     protected void onStop() {
@@ -52,21 +56,13 @@ public class MexicanwaveActivity extends Activity implements SensorEventListener
         accelerometer = mySensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         magnetometer = mySensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
         
-  
+        waveCompass = new WaveCompass(this);
+        setContentView(waveCompass);
         
         button.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View arg0) {
-	        	
-        		
-				if (isLightOn) {
-	        		isLightOn = false;
-	        		roarHandler.calmDown();
-	        		
-	        	} else {
-	        		isLightOn = true;
-	        		roarHandler.goWild();
-	        	}
+
         	}
         	
         });
@@ -119,6 +115,9 @@ public class MexicanwaveActivity extends Activity implements SensorEventListener
 				azimuth = orientation[0];
 				
 				roarHandler.check(azimuth);
+				
+				
+				waveCompass.setDirection((float) (-roarHandler.getAzimuth()*180/Math.PI));
 
 			}
 			

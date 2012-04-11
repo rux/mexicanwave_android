@@ -74,7 +74,7 @@ class RoarHandler {
 		azimuth = (float) Math.atan2(x, y);  // upside down x and y.  do not be afraid.
 	}
 	
-	private float getAzimuth() {
+	public float getAzimuth() {
 		// TODO Auto-generated method stub
 		return azimuth;
 	}	
