@@ -1,5 +1,6 @@
 package com.yell.labs.mexicanwave;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -10,6 +11,7 @@ import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
 import android.os.Vibrator;
 import android.util.Log;
+import android.view.SurfaceView;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -18,10 +20,13 @@ class RoarHandler {
 	private Camera camera;
 	private Parameters p;
 	private LinearLayout theLayout;
+	private SurfaceView dummy;
 	
 	private boolean currentlyRoaring;
 	
 	private float azimuth;
+	
+	
 	
 
 	RoarHandler(Context c, View v) {
@@ -32,8 +37,17 @@ class RoarHandler {
         }
         if (camera == null) {
         	camera = Camera.open();
+            dummy = new SurfaceView(c);
+            try {
+            	camera.setPreviewDisplay(dummy.getHolder());
+            } catch (IOException e) {
+				e.printStackTrace();
+			} 
+            
         }
         p = camera.getParameters();
+        
+        
 		vibrator = (Vibrator) c.getSystemService(Context.VIBRATOR_SERVICE);  
         theLayout = (LinearLayout) v;
         currentlyRoaring = false;
